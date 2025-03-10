@@ -101,3 +101,81 @@ SQL запрос:
 SELECT hd FROM pc GROUP BY (hd) HAVING COUNT(model) >= 2
 _________________________
 
+Задание 16.
+Текст задания:
+Найдите пары моделей PC, имеющих одинаковые скорость и RAM. В результате каждая пара указывается только один раз, т.е. (i,j), но не (j,i), Порядок вывода: модель с большим номером, модель с меньшим номером, скорость и RAM.
+
+Решение:
+SQL запрос:
+SELECT DISTINCT p1.model, p2.model, p1.speed, p1.ram
+FROM pc p1, pc p2
+WHERE p1.speed = p2.speed AND p1.ram = p2.ram AND p1.model > p2.model
+
+_________________________
+
+Задание 17.
+Текст задания:
+
+
+Решение:
+SQL запрос:
+select distinct p.type,p.model,l.speed
+from laptop l
+join product p on l.model=p.model
+where l.speed<(select min(speed)
+                      from pc)
+
+_________________________
+
+
+Задание 18.
+Текст задания:
+Найдите производителей самых дешевых цветных принтеров. Вывести: maker, price
+
+Решение:
+SQL запрос:
+SELECT DISTINCT product.maker, printer.price
+FROM product, printer
+WHERE product.model = printer.model
+AND printer.color = 'y'
+AND printer.price = (
+SELECT MIN(price) FROM printer
+WHERE printer.color = 'y'
+) 
+
+_________________________
+
+
+Задание 19.
+Текст задания:
+Для каждого производителя, имеющего модели в таблице Laptop, найдите средний размер экрана выпускаемых им ПК-блокнотов.
+Вывести: maker, средний размер экрана.
+
+Решение:
+SQL запрос:
+SELECT
+product.maker, AVG(screen)
+FROM laptop
+LEFT JOIN product ON product.model = laptop.model
+GROUP BY product.maker
+
+_________________________
+
+
+Задание 20.
+Текст задания:
+Найдите производителей, выпускающих по меньшей мере три различных модели ПК. Вывести: Maker, число моделей ПК.
+
+
+Решение:
+SQL запрос:
+SELECT maker, COUNT(model)
+FROM product
+WHERE type = 'pc'
+GROUP BY product.maker
+HAVING COUNT (DISTINCT model) >= 3
+______________________
+
+
+
+
